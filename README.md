@@ -7,4 +7,4 @@ This workflow allows you to quickly look up bible passages and copy them to your
 Download the [latest release version of the workflow on Packal](http://www.packal.org/workflow/esv-online-bible).
 
 ---
-Huge thanks to [deanishe](https://www.alfredforum.com/profile/5235-deanishe/) for his numerous contributions to this workflow! [Buy him a beer](https://www.paypal.me/deanishe)!
+Huge thanks to [deanishe](https://www.alfredforum.com/profile/5235-deanishe/) for his numerous contributions to this workflow! [Buy him a beer (his preferred method of donation)](https://www.paypal.me/deanishe)!
