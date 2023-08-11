@@ -1,17 +1,14 @@
 # encoding: utf-8
+from urllib.parse import urlencode
+from time import time
+from hashlib import md5
+import sys
+import subprocess
+import re
+import os
+import json
 
 """Alfred Script Filter to search the ESV Bible."""
-
-from __future__ import print_function
-
-from hashlib import md5
-import json
-import os
-import re
-import subprocess
-import sys
-from time import time
-from urllib import urlencode
 
 API_KEY = '5974948d3baa3d1cabc4eb00e4099e3d785d43df'
 API_URL = 'https://api.esv.org/v3/passage/text/'
@@ -53,9 +50,15 @@ def log(s, *args):
         *args: Arguments to format string.
 
     """
+    try:
+        if isinstance(s, bytes):
+            s = s.decode('utf-8')  # Decode bytes to string
+    except AttributeError:
+        pass
     if args:
-        s = s % args
-    print(s, file=sys.stderr)
+        print(s % args, file=sys.stderr)
+    else:
+        print(s, file=sys.stderr)
 
 
 class ESVError(Exception):
@@ -104,7 +107,7 @@ class Cache(object):
         """Perform API query, using cached results if not expired.
 
         Args:
-            query (unicode): Search string.
+            query (str): Search string.
 
         Returns:
             Passage: Passage from API or cache.
@@ -139,7 +142,7 @@ class Cache(object):
 
         if cachepath:  # Cache response
             with open(cachepath, 'wb') as fp:
-                json.dump(data, fp)
+                fp.write(json.dumps(data).encode('utf-8'))
 
         return passage
 
@@ -205,7 +208,8 @@ class Passage(object):
         Returns:
             str: Full text of passage with reference.
         """
-        return self.__unicode__().encode('utf-8')
+        # return self.__unicode__().encode('utf-8')
+        return self.__unicode__()
 
     def __unicode__(self):
         """Passage as formatted Unicode string.
@@ -303,7 +307,7 @@ def main():
     log('.')  # Ensure real log starts on a new line
 
     # Fetch user query and decode to Unicode
-    query = sys.argv[1].decode('utf-8')
+    query = sys.argv[1]
 
     cache = Cache(CACHEDIR)
     try:
